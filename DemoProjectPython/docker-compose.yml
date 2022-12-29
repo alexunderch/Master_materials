@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  server:
+    build: ./project
+    image: master-image
+    ports:
+      - 5555:5555
+      # - 6969:6969
+    stdin_open: true
+    volumes:
+      - ./project/:/app
+    tty: true
+    command: gunicorn main:app --bind 0.0.0.0:5555 --chdir /app/server
+    environment:
+      - REDIS_HOST=REDIS_HOSTS=local:redis:6380
+      - REDIS_PORT_NUMBER=6969
+
+
+  redis:
+    image: redis
+
+    command: --port 6969
+    ports:
+      - 6969:6969

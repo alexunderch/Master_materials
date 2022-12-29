@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><script>
+    window.addEventListener('WebComponentsReady', function() {
+      console.warn('WebComponentsReady');
+      const loaderTag = document.createElement('script');
+      loaderTag.src = 'https://distill.pub/template.v2.js';
+      document.head.insertBefore(loaderTag, document.head.firstChild);
+    });</script>
+  
+  <script type="module"  src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.17/webcomponents-loader.js"></script>
+  
+  <script>
+    // hack to edit font size in code snippets. guaranteed a better way to do 
+    // this, but I'm not a webdev
+    window.onload = function() {
+      setTimeout(() => { document.querySelectorAll("d-code").forEach(function(e) {e.shadowRoot.querySelector('#code-container').style.fontSize = "0.7em"}); }, 3000);
+    }
+    </script>
+    <d-title>
+      <h1>Self-classifying MNIST Digits</h1>
+      <p>Achieving Distributed Coordination with Neural Cellular Automata</p>
+    </d-title>
+  
+    <d-title>
+    <p>
+       Hello! Here I wanted to demonstrate all great capabilites of my demo! 
+       It is based on a well-known distill.pub article and allows you to experiment with three different model varitations. 
+       Have a look how differential and learnable rules act to classify each pixel of a drawn digit from 0 to 9.
+    </p>
+    
+    <p>
+        Available models: <br> <br>
+        1.<a href="http://0.0.0.0:5555/mutating">Mutating</a> model does its best using mutating pool for regularizion and sample pool not to forget what it learned. <br> 
+        2.<a href="http://0.0.0.0:5555/persistent">Persistent</a> model uses sample pool but does not mutate examples. <br> 
+        3.<a href="http://0.0.0.0:5555/naive">Naive</a> model just tries to optimize l2 loss between updates. <br>
+    
+
+    </p>
+    </p><figure style="
+        margin-left: auto;
+        margin-right: auto;
+        grid-column: page;
+        width: 100%;
+        max-width: 2000px;
+      ">
+      <object data="../static/image_data/model.svg" type="image/svg+xml" style="width: 100%"></object>
+      <figcaption>A single update step of the model.</figcaption>
+    </figure>
+    <p>
+    </d-title>
+    
+    
+  
+  </html>
