@@ -33,6 +33,9 @@ K_LQR = (R^-1) * B'* P_inf_hor;
 A_m = A - B * K_LQR;
 B_m = B;
 
+fprintf('%s\n', 'Eigenvalues of the reference system');
+poles = eig(A_m) %fing eigenvalues of the matrix A
+
 T = 5;
 tspan = 0:0.1:T;
 
@@ -42,8 +45,8 @@ theta_ICs = [0, 0, 0, 0];
 ICs = [sys_ICs, x_m_ICs, theta_ICs];
 
 % g_ref = 0 -- stability
-g_ref = @(t)[0; 0];
-% g_ref = @(t)[sin(20*t)*cos(40*t); sin(20*t)*cos(40*t)];
+%g_ref = @(t)[0; 0];
+g_ref = @(t)[sin(20*t)*cos(40*t); sin(40*t)*cos(20*t)];
 
 sys_m = ss(A_m, B_m, eye(size(A, 1)), zeros(size(B_m)));
 g_ref_vals = zeros(size(B_m, 2), length(tspan));
@@ -55,15 +58,15 @@ end
 x_m =lsim(sys_m, g_ref_vals, tspan, x_m_ICs); 
 figure('Name', 'Reference model trajectories'); 
 plot(tspan, x_m); 
-legend('x_m', 'dx_m', 'fi_m', 'dfi_m');
+legend('u_m', 'omega_m', 'q_m', 'theta_m');
 % 
 [t_plot, x_cl_adapt] = ode45(@(t, x)pendulim_on_cart_RHS(t, A, B, K_LQR, A_m, B_m,...
     x, g_ref, @MIMO_adaptive_control), tspan, ICs);
 
 figure('Name','Extended system trajectories along adaptive conrol'); 
 plot(t_plot, x_cl_adapt); % просмотр динамики всего вектора состяний
-legend('x','dx', 'fi', 'dfi',...
-    'x_m', 'dx_m', 'fi_m', 'dfi_m',...
+legend('u', 'omega', 'q', 'theta',...
+    'u_m', 'omega_m', 'q_m', 'theta_m',...
     'Theta_1', 'Theta_2');
 
 figure('Name','Tracking errors along adaptive conrol'); 
@@ -75,8 +78,8 @@ legend('e_1', 'e_2', 'e_3', 'e_4');
 
 figure('Name','Extended system trajectories along LQR conrol'); 
 plot(t_plot, x_cl_LQR(:, 1:8));
-legend('x','dx', 'fi', 'dfi',...
-    'x_m', 'dx_m', 'fi_m', 'dfi_m');
+legend('u', 'omega', 'q', 'theta',...
+    'u_m', 'omega_m', 'q_m', 'theta_m');
 
 figure('Name','Tracking errors along LQR conrol'); 
 plot(t_plot, x_cl_LQR(:, 1:4) - x_cl_LQR(:, 5:8) );
